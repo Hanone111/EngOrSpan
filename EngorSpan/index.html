@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnglishOrSpanish</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #ff6b6b, #ffe66d);
+            overflow: hidden;
+            transition: background 0.5s;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .language-option {
+            font-size: 80px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s, text-shadow 0.3s, color 0.3s;
+            text-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-option:hover {
+            transform: translateY(-4px);
+            text-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #007bff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #or {
+            font-size: 60px;
+            color: white;
+            margin: 0 20px;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #textDisplay {
+            margin-top: 20px;
+            font-size: 80px;
+            color: #fff;
+            text-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: textGlow 1s infinite alternate;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+        }
+
+        #retryButton {
+            display: none;
+            background: linear-gradient(45deg, #ff8c00, #ff4500);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 24px;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #retryButton:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff8c00, #ff4500);
+            z-index: -1;
+            transition: transform 0.3s ease;
+            transform: scale(0);
+        }
+
+        #retryButton:hover:before {
+            transform: scale(1);
+        }
+
+        #retryButton:hover {
+            background: linear-gradient(45deg, #ff4500, #ff8c00);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        #retryButton:active {
+            transform: translateY(2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes textGlow {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ccc, 0 0 40px #ccc, 0 0 50px #ccc, 0 0 60px #ccc, 0 0 70px #ccc;
+            }
+
+            to {
+                text-shadow: 0 0 20px #fff, 0 0 30px #ddd, 0 0 40px #ddd, 0 0 50px #ddd, 0 0 60px #ddd, 0 0 70px #ddd, 0 0 80px #ddd;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .language-option {
+                font-size: 60px;
+            }
+
+            #or {
+                font-size: 40px;
+                margin: 10px 0;
+            }
+
+            #textDisplay {
+                font-size: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="button-container">
+        <div id="button1" class="language-option">English</div>
+        <div id="or">or</div>
+        <div id="button2" class="language-option">Spanish</div>
+    </div>
+    <div id="textDisplay"></div>
+    <button id="retryButton">Retry</button>
+
+    <audio id="audioPlayer" src="../EngorSpan/media/0806222.MP3" style="display: none;"></audio>
+
+    <script>
+        const textDisplay = document.getElementById('textDisplay');
+        const button1 = document.getElementById('button1');
+        const button2 = document.getElementById('button2');
+        const retryButton = document.getElementById('retryButton');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const orText = document.getElementById('or');
+
+        let isEnglishClicked = false;
+        let isButtonClicked = false;
+
+        const showText = (text) => {
+            textDisplay.textContent = text;
+        };
+
+        const hideButtons = () => {
+            button1.style.display = 'none';
+            button2.style.display = 'none';
+            orText.style.display = 'none';
+            isButtonClicked = true;
+        };
+
+        button1.addEventListener('click', () => {
+            isEnglishClicked = true;
+            showText('Whoever moves first is gay.');
+            hideButtons();
+            audioPlayer.play();
+        });
+
+        button2.addEventListener('click', () => {
+            isEnglishClicked = false;
+            showText('El primero que se mueve es gay.');
+            hideButtons();
+            audioPlayer.play();
+        });
+
+        const showRetryButton = () => {
+            if (isButtonClicked) {
+                retryButton.style.display = 'block';
+            }
+        };
+
+        document.addEventListener('mousemove', () => {
+            if (isButtonClicked) {
+                if (isEnglishClicked) {
+                    showText('You are gay.');
+                } else {
+                    showText('Eres gay.');
+                }
+                showRetryButton();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (isButtonClicked) {
+                if (isEnglishClicked) {
+                    showText('You are gay.');
+                } else {
+                    showText('Eres gay.');
+                }
+                showRetryButton();
+            }
+        });
+
+        retryButton.addEventListener('click', () => {
+            textDisplay.textContent = '';
+            button1.style.display = 'inline-block';
+            button2.style.display = 'inline-block';
+            orText.style.display = 'block';
+            retryButton.style.display = 'none';
+            isButtonClicked = false;
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+        });
+    </script>
+</body>
+
+</html>
